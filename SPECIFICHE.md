@@ -89,7 +89,7 @@ Città sconosciuta: 404. `ore` fuori da 1-168: 400. Legge soltanto, non scrive m
 - Una pagina sola, senza framework. Si vede bene anche a larghezza telefono (360 px).
 - Elenco città con temperatura, vento e pioggia; ricerca, regione e ordinamento. Grafico delle 24 ore: da fare.
 - Cartina: un punto per città, colore secondo la temperatura; cursore o tocco mostra i dati, clic li fissa.
-  Contorno dell'Italia: da aggiungere.
+  Confini delle regioni: ISTAT tramite geojson-italy (CC BY 4.0), in `confini.js`.
 - Dati con `fetch("/api/...")`, aggiornati ogni 5 minuti. Ore mostrate nel fuso del browser (nei dati sono UTC).
 - Se l'API non risponde: messaggio chiaro, e restano visibili gli ultimi dati con la loro ora.
 - Testo dall'API inserito con `textContent`, mai con `innerHTML`.

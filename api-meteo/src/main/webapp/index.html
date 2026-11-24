@@ -7,7 +7,8 @@
     <title>Meteo capoluoghi</title>
     <link rel="stylesheet" href="stile.css">
     <!-- defer: lo script parte quando la pagina e' stata letta tutta -->
-    <!-- prima la mappa, poi app.js che la usa -->
+    <!-- in ordine: i confini, la mappa che li disegna, app.js che usa la mappa -->
+    <script src="confini.js" defer></script>
     <script src="mappa.js" defer></script>
     <script src="app.js" defer></script>
 </head>
@@ -69,7 +70,9 @@
 
     <footer>
         Dati meteo: <a href="https://open-meteo.com/">Open-Meteo.com</a>
-        (<a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a>)
+        (<a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a>).
+        Confini: <a href="https://www.istat.it/">ISTAT</a>, tramite
+        <a href="https://github.com/guglielmo/geojson-italy">geojson-italy</a> (CC BY 4.0), semplificati.
     </footer>
 </body>
 </html>

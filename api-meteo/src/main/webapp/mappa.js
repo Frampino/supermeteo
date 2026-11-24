@@ -143,6 +143,13 @@ document.addEventListener("keydown", e => {
 });
 window.addEventListener("resize", () => mostra(trova(fissata)));
 
+// I confini si disegnano una volta sola: una figura (path) per regione
+for (const disegno of Object.values(CONFINI)) {
+    const figura = document.createElementNS(SVG, "path");
+    figura.setAttribute("d", disegno);
+    document.getElementById("confini").append(figura);
+}
+
 // La legenda: un quadratino per colore, con i gradi scritti
 for (let i = 0; i <= PASSI.length; i++) {
     const voce = document.createElement("li");
