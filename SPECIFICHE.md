@@ -38,24 +38,17 @@ Chi aggiunge un campo non rompe gli altri: chi legge ignora i campi che non cono
 
 ## 1. Raccoglitore (Python)
 
-- Ogni 15 minuti, per ogni città:
+- Ogni ora, per ogni città di `raccoglitore/citta.csv` (capoluoghi di provincia, più Colle di Val d'Elsa):
   `https://api.open-meteo.com/v1/forecast?latitude=..&longitude=..&current=temperature_2m,wind_speed_10m,precipitation&timezone=UTC`
 - Campi della risposta: `current.time` (senza secondi né `Z`: vanno aggiunti), `current.temperature_2m`,
   `current.wind_speed_10m`, `current.precipitation`.
 - Se una città dà errore: stampa l'errore e passa alla successiva. Non si ferma.
-- Configurazione da variabili d'ambiente: `KAFKA_SERVER` (predefinito `localhost:9092`), `INTERVALLO_SECONDI` (900).
+- Configurazione da variabili d'ambiente: `KAFKA_SERVER` (predefinito `localhost:9092`), `INTERVALLO_SECONDI` (3600).
+- Se le chiamate previste superano 9.000 al giorno, non parte.
 
-| citta | latitudine | longitudine |
-|---|---|---|
-| `siena` | 43.3188 | 11.3308 |
-| `firenze` | 43.7696 | 11.2558 |
-| `pisa` | 43.7228 | 10.4017 |
-| `grosseto` | 42.7603 | 11.1136 |
-| `colle_val_delsa` | 43.4203 | 11.1264 |
+Colonne di `citta.csv`: `citta,nome,regione,latitudine,longitudine`. Coordinate dal geocoding di Open-Meteo.
 
-Coordinate da ricontrollare prima dell'uso.
-
-**Finito quando:** un consumatore di prova vede 5 messaggi a ogni giro, e con un indirizzo sbagliato per una città ne vede 4.
+**Finito quando:** un consumatore di prova vede un messaggio per città a ogni giro, e con una città sbagliata ne vede uno in meno.
 
 ## 2. Archivio (Java)
 
@@ -113,4 +106,4 @@ Da decidere a web app finita. L'API non cambia, quindi si aggiunge senza toccare
 ## Fonte dei dati
 
 Open-Meteo, uso non commerciale: meno di 10.000 chiamate al giorno, nessuna chiave, citazione obbligatoria.
-5 città ogni 15 minuti sono 480 chiamate al giorno.
+119 città ogni ora sono 2.856 chiamate al giorno.

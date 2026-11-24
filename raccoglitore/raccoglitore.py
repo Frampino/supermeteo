@@ -7,7 +7,8 @@
 #   4. aspetta e ricomincia
 # Non sa niente di Java e del database: conosce solo Open-Meteo e Kafka.
 
-import json, os, time #os è operation system
+import csv, json, os, time #os è operation system
+# csv:  legge i file con i valori separati da virgola
 # json: trasforma un dizionario Python in testo JSON e viceversa
 # os:   parla con il sistema operativo (operating system); qui serve per leggere le variabili d'ambiente
 # time: serve per la pausa tra un giro e l'altro
@@ -19,18 +20,25 @@ from confluent_kafka import Producer    # la libreria di Kafka: qui serve solo c
 # Così si cambia configurazione senza toccare il codice (per esempio dentro Docker).
 KAFKA_SERVER = os.environ.get("KAFKA_SERVER", "localhost:9092") #accede a kafka
 # questa riga prende solo l'indirizzo: il collegamento vero lo apre Producer, più sotto
-INTERVALLO_SECONDI = int(os.environ.get("INTERVALLO_SECONDI", "900"))
-# le variabili d'ambiente sono sempre testo, per questo int(); 900 secondi = 15 minuti
+INTERVALLO_SECONDI = int(os.environ.get("INTERVALLO_SECONDI", "3600"))
+# le variabili d'ambiente sono sempre testo, per questo int(); 3600 secondi = 1 ora
 
 # citta: (latitudine, longitudine)
 # è un dizionario: la chiave è il nome, il valore è una coppia (tupla) di coordinate
-CITTA = {
-    "siena": (43.3188, 11.3308),
-    "firenze": (43.7696, 11.2558),
-    "pisa": (43.7228, 10.4017),
-    "grosseto": (42.7603, 11.1136),
-    "colle_val_delsa": (43.4203, 11.1264),
-}
+# Le città sono tante, quindi stanno in un file a parte: per aggiungerne una basta una riga in citta.csv.
+# os.path.dirname(__file__) è la cartella di questo file: così funziona da qualunque cartella lo si avvii.
+def leggi_citta():
+    percorso = os.path.join(os.path.dirname(os.path.abspath(__file__)), "citta.csv")
+    with open(percorso, encoding="utf-8", newline="") as file:
+        # DictReader: ogni riga diventa un dizionario con i nomi della prima riga (citta, latitudine...)
+        return {riga["citta"]: (float(riga["latitudine"]), float(riga["longitudine"]))
+                for riga in csv.DictReader(file)}
+
+CITTA = leggi_citta()
+
+# Open-Meteo gratuito: meno di 10.000 chiamate al giorno. Un giorno ha 86.400 secondi.
+CHIAMATE_AL_GIORNO = len(CITTA) * 86400 / INTERVALLO_SECONDI
+MASSIMO_AL_GIORNO = 9000  # un po' sotto il limite, per stare tranquilli
 
 # Riceve il nome di una città e restituisce il messaggio da pubblicare (un dizionario).
 def leggi_meteo(citta):
@@ -67,6 +75,11 @@ def consegnato(err, msg):
         print(f"inviato {msg.key().decode()} -> partizione {msg.partition()}, offset {msg.offset()}")
 
 def main():
+    # meglio non partire che superare il limite senza accorgersene
+    if CHIAMATE_AL_GIORNO > MASSIMO_AL_GIORNO:
+        raise SystemExit(f"Troppe chiamate: {CHIAMATE_AL_GIORNO:.0f} al giorno con {len(CITTA)} città. "
+                         "Aumenta INTERVALLO_SECONDI.")
+    print(f"{len(CITTA)} città, un giro ogni {INTERVALLO_SECONDI} secondi")
     # il producer: gli basta l'indirizzo di Kafka
     p = Producer({"bootstrap.servers": KAFKA_SERVER})
     try:

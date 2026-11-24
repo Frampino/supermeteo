@@ -3,10 +3,9 @@
     "configurations": [
         {
             "type": "debugpy",
-            "name": "Raccoglitore (ogni 30 secondi)",
+            "name": "Raccoglitore (ogni ora)",
             "request": "launch",
             "program": "${workspaceFolder}\\raccoglitore\\raccoglitore.py",
-            "env": { "INTERVALLO_SECONDI": "30" },
             "console": "integratedTerminal"
         },
         {

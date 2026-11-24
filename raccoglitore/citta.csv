@@ -1,0 +1,120 @@
+citta,nome,regione,latitudine,longitudine
+agrigento,Agrigento,Sicilia,37.3107,13.5766
+alessandria,Alessandria,Piemonte,44.9092,8.6101
+ancona,Ancona,Marche,43.6072,13.5103
+andria,Andria,Puglia,41.2312,16.298
+aosta,Aosta,Valle d'Aosta,45.7376,7.3172
+arezzo,Arezzo,Toscana,43.4628,11.8807
+ascoli_piceno,Ascoli Piceno,Marche,42.8535,13.5739
+asti,Asti,Piemonte,44.9016,8.2075
+avellino,Avellino,Campania,40.9149,14.791
+bari,Bari,Puglia,41.1207,16.8698
+barletta,Barletta,Puglia,41.3143,16.2816
+belluno,Belluno,Veneto,46.1426,12.2156
+benevento,Benevento,Campania,41.1307,14.7782
+bergamo,Bergamo,Lombardia,45.696,9.6672
+biella,Biella,Piemonte,45.563,8.058
+bologna,Bologna,Emilia-Romagna,44.4938,11.3387
+bolzano,Bolzano,Trentino-Alto Adige,46.4907,11.3398
+brescia,Brescia,Lombardia,45.5356,10.2147
+brindisi,Brindisi,Puglia,40.6322,17.9361
+cagliari,Cagliari,Sardegna,39.2305,9.1192
+caltanissetta,Caltanissetta,Sicilia,37.4903,14.0622
+campobasso,Campobasso,Molise,41.5595,14.6674
+carbonia,Carbonia,Sardegna,39.1647,8.5213
+caserta,Caserta,Campania,41.0726,14.3323
+catania,Catania,Sicilia,37.4922,15.0704
+catanzaro,Catanzaro,Calabria,38.8825,16.6009
+cesena,Cesena,Emilia-Romagna,44.1391,12.2431
+chieti,Chieti,Abruzzo,42.3483,14.1649
+colle_val_delsa,Colle di Val d'Elsa,Toscana,43.4211,11.1274
+como,Como,Lombardia,45.8082,9.0832
+cosenza,Cosenza,Calabria,39.2989,16.2531
+cremona,Cremona,Lombardia,45.1332,10.0213
+crotone,Crotone,Calabria,39.0808,17.1276
+cuneo,Cuneo,Piemonte,44.3907,7.5483
+enna,Enna,Sicilia,37.5655,14.2743
+fermo,Fermo,Marche,43.163,13.7227
+ferrara,Ferrara,Emilia-Romagna,44.838,11.6206
+firenze,Firenze,Toscana,43.7792,11.2463
+foggia,Foggia,Puglia,41.4584,15.5519
+forli,Forlì,Emilia-Romagna,44.2218,12.0414
+frosinone,Frosinone,Lazio,41.6398,13.3411
+genova,Genova,Liguria,44.4048,8.9444
+gorizia,Gorizia,Friuli-Venezia Giulia,45.9409,13.6217
+grosseto,Grosseto,Toscana,42.763,11.1094
+iglesias,Iglesias,Sardegna,39.3092,8.5372
+imperia,Imperia,Liguria,43.8892,8.0393
+isernia,Isernia,Molise,41.596,14.234
+l_aquila,L'Aquila,Abruzzo,42.3505,13.3995
+la_spezia,La Spezia,Liguria,44.103,9.8238
+lanusei,Lanusei,Sardegna,39.8793,9.5402
+latina,Latina,Lazio,41.4661,12.9043
+lecce,Lecce,Puglia,40.3548,18.1724
+lecco,Lecco,Lombardia,45.8559,9.397
+livorno,Livorno,Toscana,43.5443,10.3262
+lodi,Lodi,Lombardia,45.3099,9.5008
+lucca,Lucca,Toscana,43.8437,10.5045
+macerata,Macerata,Marche,43.2979,13.4529
+mantova,Mantova,Lombardia,45.1603,10.7978
+massa,Massa,Toscana,44.0354,10.1393
+matera,Matera,Basilicata,40.666,16.6046
+messina,Messina,Sicilia,38.1939,15.5526
+milano,Milano,Lombardia,45.4643,9.1895
+modena,Modena,Emilia-Romagna,44.6478,10.9254
+monza,Monza,Lombardia,45.58,9.2725
+napoli,Napoli,Campania,40.8522,14.2681
+novara,Novara,Piemonte,45.4469,8.6212
+nuoro,Nuoro,Sardegna,40.3199,9.3257
+olbia,Olbia,Sardegna,40.9234,9.498
+oristano,Oristano,Sardegna,39.9036,8.5926
+padova,Padova,Veneto,45.408,11.8859
+palermo,Palermo,Sicilia,38.1166,13.3636
+parma,Parma,Emilia-Romagna,44.7993,10.3262
+pavia,Pavia,Lombardia,45.1921,9.1592
+perugia,Perugia,Umbria,43.1122,12.3888
+pesaro,Pesaro,Marche,43.9092,12.9164
+pescara,Pescara,Abruzzo,42.4584,14.2028
+piacenza,Piacenza,Emilia-Romagna,45.0524,9.6934
+pisa,Pisa,Toscana,43.7085,10.4036
+pistoia,Pistoia,Toscana,43.9306,10.9237
+pordenone,Pordenone,Friuli-Venezia Giulia,45.9569,12.6605
+potenza,Potenza,Basilicata,40.6418,15.8079
+prato,Prato,Toscana,43.8805,11.097
+ragusa,Ragusa,Sicilia,36.9257,14.7244
+ravenna,Ravenna,Emilia-Romagna,44.4134,12.2012
+reggio_calabria,Reggio Calabria,Calabria,38.1105,15.6613
+reggio_emilia,Reggio Emilia,Emilia-Romagna,44.6983,10.6312
+rieti,Rieti,Lazio,42.4048,12.8574
+rimini,Rimini,Emilia-Romagna,44.0575,12.5653
+roma,Roma,Lazio,41.8919,12.5113
+rovigo,Rovigo,Veneto,45.0698,11.7902
+salerno,Salerno,Campania,40.6754,14.7933
+sanluri,Sanluri,Sardegna,39.5618,8.8997
+sassari,Sassari,Sardegna,40.7259,8.5555
+savona,Savona,Liguria,44.309,8.4771
+siena,Siena,Toscana,43.3182,11.3306
+siracusa,Siracusa,Sicilia,37.0754,15.2866
+sondrio,Sondrio,Lombardia,46.1685,9.8713
+taranto,Taranto,Puglia,40.4644,17.2471
+tempio_pausania,Tempio Pausania,Sardegna,40.9007,9.1046
+teramo,Teramo,Abruzzo,42.6612,13.699
+terni,Terni,Umbria,42.5633,12.6433
+torino,Torino,Piemonte,45.0705,7.6868
+tortoli,Tortolì,Sardegna,39.9263,9.6557
+trani,Trani,Puglia,41.2773,16.4101
+trapani,Trapani,Sicilia,38.0176,12.5362
+trento,Trento,Trentino-Alto Adige,46.0679,11.1211
+treviso,Treviso,Veneto,45.6667,12.2416
+trieste,Trieste,Friuli-Venezia Giulia,45.6495,13.7768
+udine,Udine,Friuli-Venezia Giulia,46.0693,13.2371
+urbino,Urbino,Marche,43.7262,12.6363
+varese,Varese,Lombardia,45.8206,8.8251
+venezia,Venezia,Veneto,45.4371,12.3326
+verbania,Verbania,Piemonte,45.9214,8.5518
+vercelli,Vercelli,Piemonte,45.3216,8.4199
+verona,Verona,Veneto,45.4385,10.9938
+vibo_valentia,Vibo Valentia,Calabria,38.6762,16.1009
+vicenza,Vicenza,Veneto,45.5467,11.5475
+villacidro,Villacidro,Sardegna,39.4573,8.741
+viterbo,Viterbo,Lazio,42.4194,12.1056
