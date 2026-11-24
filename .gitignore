@@ -1,0 +1,11 @@
+.venv/
+target/
+meteo.env
+__pycache__/
+# impostazioni con percorsi del PC
+.vscode/settings.json
+# file creati dalle estensioni di VS Code
+.github/modernize/
+.classpath
+.project
+.settings/

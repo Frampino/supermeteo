@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "debugpy",
+            "name": "Raccoglitore (ogni 30 secondi)",
+            "request": "launch",
+            "program": "${workspaceFolder}\\raccoglitore\\raccoglitore.py",
+            "env": { "INTERVALLO_SECONDI": "30" },
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "java",
+            "name": "Archivio",
+            "request": "launch",
+            "mainClass": "meteo.Archivio",
+            "projectName": "archivio",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
