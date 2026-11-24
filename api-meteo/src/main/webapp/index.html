@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <!-- senza questa riga il telefono mostrerebbe la pagina rimpicciolita -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meteo capoluoghi</title>
+    <link rel="stylesheet" href="stile.css">
+    <!-- defer: lo script parte quando la pagina e' stata letta tutta -->
+    <!-- prima la mappa, poi app.js che la usa -->
+    <script src="mappa.js" defer></script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Meteo capoluoghi</h1>
+        <p id="stato" role="status">Caricamento...</p>
+    </header>
+
+    <main>
+        <div class="filtri">
+            <label>Cerca <input id="cerca" type="search" placeholder="Siena" autocomplete="off"></label>
+            <label>Regione
+                <select id="regione">
+                    <option value="">Tutte</option>
+                </select>
+            </label>
+            <label>Ordina
+                <select id="ordine">
+                    <option value="nome">Nome</option>
+                    <option value="temperatura">Temperatura</option>
+                    <option value="vento">Vento</option>
+                    <option value="pioggia">Pioggia</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="colonne">
+        <section class="cartina" aria-label="Cartina">
+            <div id="contenitore-mappa">
+                <!-- per chi usa un lettore di schermo gli stessi dati sono nella tabella -->
+                <svg id="mappa" viewBox="0 0 726 952" role="img" aria-label="Temperature sulla cartina dell'Italia">
+                    <g id="confini"></g>
+                    <g id="punti"></g>
+                </svg>
+                <div id="scheda" hidden></div>
+            </div>
+            <ul id="legenda" aria-label="Temperatura"></ul>
+        </section>
+
+        <section aria-label="Tabella">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Citt&agrave;</th>
+                    <th scope="col" class="numero">&deg;C</th>
+                    <th scope="col" class="numero">Vento km/h</th>
+                    <th scope="col" class="numero">Pioggia mm</th>
+                    <th scope="col" class="numero">Ora</th>
+                </tr>
+            </thead>
+            <!-- le righe le crea app.js -->
+            <tbody id="righe"></tbody>
+        </table>
+        <p id="vuoto" hidden>Nessuna citt&agrave; trovata.</p>
+        </section>
+        </div>
+    </main>
+
+    <footer>
+        Dati meteo: <a href="https://open-meteo.com/">Open-Meteo.com</a>
+        (<a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a>)
+    </footer>
+</body>
+</html>

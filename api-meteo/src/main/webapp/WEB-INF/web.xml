@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
+         version="6.1">
+    <!-- ${ENV=...} e' una variabile d'ambiente: la password non sta nel codice -->
+    <data-source>
+        <name>java:app/jdbc/meteo</name>
+        <class-name>org.postgresql.ds.PGSimpleDataSource</class-name>
+        <server-name>${ENV=DB_HOST}</server-name>
+        <port-number>5432</port-number>
+        <database-name>${ENV=DB_NAME}</database-name>
+        <user>${ENV=DB_USER}</user>
+        <password>${ENV=DB_PASSWORD}</password>
+        <!-- secondi: se il database non risponde, l'API da' errore invece di restare bloccata -->
+        <property><name>connectTimeout</name><value>5</value></property>
+        <property><name>socketTimeout</name><value>5</value></property>
+        <!-- prima di riusare un collegamento controlla che sia ancora vivo -->
+        <property><name>fish.payara.is-connection-validation-required</name><value>true</value></property>
+        <property><name>fish.payara.connection-validation-method</name><value>auto-commit</value></property>
+    </data-source>
+</web-app>

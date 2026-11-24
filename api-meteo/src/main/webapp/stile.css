@@ -1,0 +1,252 @@
+:root {
+    color-scheme: light dark;
+    --sfondo: light-dark(#f6f8f7, #14191b);
+    --testo: light-dark(#1b2528, #e7eceb);
+    --tenue: light-dark(#56646a, #9fb0b3);
+    --riga: light-dark(#dbe2e1, #2c373a);
+    --avviso: light-dark(#9c2f12, #ff9d80);
+    --terra: light-dark(#e6ebe9, #222b2e);
+    /* temperatura: un colore solo, da freddo (vicino allo sfondo) a caldo (lontano dallo sfondo) */
+    --t0: light-dark(oklch(.72 .14 60), oklch(.47 .10 45));
+    --t1: light-dark(oklch(.66 .15 55), oklch(.54 .13 48));
+    --t2: light-dark(oklch(.59 .16 50), oklch(.61 .15 50));
+    --t3: light-dark(oklch(.52 .15 45), oklch(.69 .16 54));
+    --t4: light-dark(oklch(.45 .13 40), oklch(.77 .15 62));
+    --t5: light-dark(oklch(.37 .11 36), oklch(.85 .12 72));
+    --t6: light-dark(oklch(.29 .08 32), oklch(.92 .08 85));
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 76rem;
+    padding: 1rem;
+    background: var(--sfondo);
+    color: var(--testo);
+    font: 1rem/1.45 system-ui, sans-serif;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+#stato {
+    margin: .25rem 0 1rem;
+    color: var(--tenue);
+}
+
+#stato.errore {
+    color: var(--avviso);
+    font-weight: 600;
+}
+
+.filtri {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.filtri label {
+    flex: 1 1 9rem;
+    font-size: .85rem;
+    color: var(--tenue);
+}
+
+.filtri input,
+.filtri select {
+    display: block;
+    width: 100%;
+    margin-top: .2rem;
+    padding: .5rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--testo);
+    background: var(--sfondo);
+    border: 1px solid var(--riga);
+    border-radius: .4rem;
+}
+
+.colonne {
+    display: grid;
+    gap: 1.5rem;
+}
+
+@media (min-width: 60rem) {
+    .colonne {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: start;
+    }
+
+    /* la cartina resta visibile mentre si scorre la tabella */
+    .cartina {
+        position: sticky;
+        top: 1rem;
+    }
+}
+
+#contenitore-mappa {
+    position: relative;
+}
+
+#mappa {
+    display: block;
+    width: 100%;
+    max-height: 80vh;
+    touch-action: manipulation;
+}
+
+#confini path {
+    fill: var(--terra);
+    stroke: var(--sfondo);
+    stroke-width: 1.5px;
+    vector-effect: non-scaling-stroke;
+}
+
+#punti circle {
+    stroke: var(--sfondo);
+    stroke-width: 1.5px;
+    vector-effect: non-scaling-stroke;
+}
+
+#punti .sbiadito {
+    opacity: .15;
+}
+
+#punti .scelto {
+    stroke: var(--testo);
+    stroke-width: 3px;
+    opacity: 1;
+}
+
+.t0 { fill: var(--t0); background: var(--t0); }
+.t1 { fill: var(--t1); background: var(--t1); }
+.t2 { fill: var(--t2); background: var(--t2); }
+.t3 { fill: var(--t3); background: var(--t3); }
+.t4 { fill: var(--t4); background: var(--t4); }
+.t5 { fill: var(--t5); background: var(--t5); }
+.t6 { fill: var(--t6); background: var(--t6); }
+.t-manca { fill: none; }
+
+#punti .t-manca {
+    stroke: var(--tenue);
+}
+
+#scheda {
+    position: absolute;
+    width: max-content;
+    max-width: 14rem;
+    padding: .6rem .75rem;
+    background: var(--sfondo);
+    border: 1px solid var(--riga);
+    border-radius: .5rem;
+    box-shadow: 0 4px 16px rgb(0 0 0 / .25);
+    font-size: .9rem;
+    pointer-events: none;
+}
+
+#scheda small {
+    display: block;
+    color: var(--tenue);
+}
+
+#scheda dl {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: .1rem .75rem;
+    margin: .4rem 0 0;
+}
+
+#scheda dt {
+    color: var(--tenue);
+}
+
+#scheda dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+#legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem .9rem;
+    margin: .5rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: .85rem;
+    color: var(--tenue);
+}
+
+.campione {
+    display: inline-block;
+    width: .8rem;
+    height: .8rem;
+    margin-right: .35rem;
+    border-radius: 50%;
+    vertical-align: -.05rem;
+}
+
+td button {
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--riga);
+    text-underline-offset: .2em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: .5rem .4rem;
+    text-align: left;
+    border-bottom: 1px solid var(--riga);
+}
+
+th {
+    font-size: .8rem;
+    color: var(--tenue);
+}
+
+td small {
+    display: block;
+    color: var(--tenue);
+}
+
+.numero {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* misura vecchia di piu' di due ore */
+.vecchia td {
+    color: var(--tenue);
+}
+
+.vecchia td:last-child {
+    color: var(--avviso);
+}
+
+footer {
+    margin: 1.5rem 0;
+    font-size: .85rem;
+    color: var(--tenue);
+}
+
+a {
+    color: inherit;
+}

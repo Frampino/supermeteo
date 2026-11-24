@@ -1,6 +1,7 @@
 .venv/
 target/
 meteo.env
+api.env
 __pycache__/
 # impostazioni con percorsi del PC
 .vscode/settings.json

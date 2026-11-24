@@ -6,7 +6,7 @@ Prima la web app; l'app per telefono è una seconda fase (sezione 5).
 ```
 Open-Meteo -> raccoglitore (Python) -> Kafka, topic "meteo" -> archivio (Java) -> PostgreSQL
                                                                                      |
-                              browser <- web (HTML/JS) <- HTTP/JSON <- api-meteo (Jakarta EE)
+                              browser (HTML/JS) <- HTTP/JSON <- api-meteo (Jakarta EE)
 ```
 
 La pagina parla solo con `api-meteo`: non conosce Kafka né il database.
@@ -17,8 +17,7 @@ La pagina parla solo con `api-meteo`: non conosce Kafka né il database.
 meteo-app/
   raccoglitore/   Python: produttore
   archivio/       Java: consumatore e salvataggio
-  api-meteo/      Jakarta EE: API
-  web/            HTML, CSS, JavaScript
+  api-meteo/      Jakarta EE: API e pagina web (src/main/webapp)
 ```
 
 ## Contratto: il messaggio sul topic "meteo"
@@ -79,6 +78,7 @@ può arrivare due volte con offset diversi.
 | richiesta | risposta |
 |---|---|
 | `GET /api/citta` | `["siena", "firenze", ...]` |
+| `GET /api/meteo` | l'ultima misura di ogni città |
 | `GET /api/meteo/{citta}` | l'ultima misura, con gli stessi campi del messaggio |
 | `GET /api/meteo/{citta}/storico?ore=24` | lista di misure, dalla più vecchia |
 
@@ -87,12 +87,14 @@ Città sconosciuta: 404. `ore` fuori da 1-168: 400. Legge soltanto, non scrive m
 ## 4. Web (HTML, CSS, JavaScript)
 
 - Una pagina sola, senza framework. Si vede bene anche a larghezza telefono (360 px).
-- Elenco città con temperatura, vento e pioggia; clic su una città: grafico delle ultime 24 ore.
+- Elenco città con temperatura, vento e pioggia; ricerca, regione e ordinamento. Grafico delle 24 ore: da fare.
+- Cartina: un punto per città, colore secondo la temperatura; cursore o tocco mostra i dati, clic li fissa.
+  Contorno dell'Italia: da aggiungere.
 - Dati con `fetch("/api/...")`, aggiornati ogni 5 minuti. Ore mostrate nel fuso del browser (nei dati sono UTC).
 - Se l'API non risponde: messaggio chiaro, e restano visibili gli ultimi dati con la loro ora.
 - Testo dall'API inserito con `textContent`, mai con `innerHTML`.
 - In fondo: `Dati meteo: Open-Meteo.com (CC BY 4.0)`.
-- Servita da un container web (nginx) che gira `/api/` verso `api-meteo`: stesso indirizzo, quindi niente CORS.
+- Sta nel `.war` di `api-meteo`: stesso indirizzo dell'API, quindi niente CORS. Prezzo: per cambiare la pagina si ridistribuisce anche l'API.
 
 **Finito quando:** spegni `api-meteo` e la pagina lo dice senza rompersi; lo riaccendi e si aggiorna da sola.
 
