@@ -24,6 +24,8 @@ public class Misura {
     private Double temperatura;
     private Double vento;
     private Double pioggia;
+    private Integer tempo;   // codice WMO; null nelle misure piu' vecchie
+    private Boolean giorno;
 
     // JPA crea gli oggetti con il costruttore vuoto
     protected Misura() {
@@ -47,6 +49,14 @@ public class Misura {
 
     public Double getPioggia() {
         return pioggia;
+    }
+
+    public Integer getTempo() {
+        return tempo;
+    }
+
+    public Boolean getGiorno() {
+        return giorno;
     }
 
     // niente metodi set: l'API legge soltanto

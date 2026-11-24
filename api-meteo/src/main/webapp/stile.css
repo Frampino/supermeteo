@@ -11,6 +11,7 @@
     /* la cartina: mare blu, Italia verde. Uguale nei due temi, solo un po' piu' scura in quello scuro */
     --mare: light-dark(#17478a, #11376c);
     --terra: light-dark(#24694f, #1e5a44);
+    --estero: light-dark(#b9cdb6, #7f9a83);
     --confine: light-dark(#a9d0bb, #86b39c);
     --tramonto: linear-gradient(110deg, #c2410c, #b3284f 60%, #7b2a7a);
     /* temperatura: dal giallo chiaro al rosso; sul verde li stacca il bordo bianco dei punti */
@@ -118,6 +119,7 @@ h1 {
 
 .colonne {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
 }
 
@@ -143,6 +145,7 @@ h1 {
 
 #contenitore-mappa {
     position: relative;
+    overflow: hidden;
     background: var(--mare);
     border-radius: .75rem;
 }
@@ -171,10 +174,74 @@ h1 {
     opacity: .25;
 }
 
-#punti .scelto {
-    r: 14px;
+.puntino {
+    fill: #fff;
+    opacity: .8;
+}
+
+#anello {
+    fill: none;
+    stroke: #fff;
     stroke-width: 3px;
-    opacity: 1;
+    vector-effect: non-scaling-stroke;
+    pointer-events: none;
+}
+
+/* le icone del tempo: il contorno scuro le stacca sia dal verde sia dai riquadri chiari */
+.sole { fill: #ffb21a; stroke: #8a4b00; stroke-width: 1; }
+.raggi { fill: none; stroke: #ffb21a; stroke-width: 2.6; stroke-linecap: round; }
+.luna { fill: #ffe9a8; stroke: #7a6a2c; stroke-width: 1; }
+.nuvola { fill: #fff; stroke: #52687c; stroke-width: 1.2; }
+.nuvola.scura { fill: #b9c8d6; }
+.goccia { fill: none; stroke: #4db2ff; stroke-width: 2.4; stroke-linecap: round; }
+.fiocco { fill: none; stroke: #9fdcff; stroke-width: 4; stroke-linecap: round; }
+.nebbia { fill: none; stroke: #b9c8d6; stroke-width: 2.4; stroke-linecap: round; }
+.fulmine { fill: #ffd21f; stroke: #8a5a00; stroke-width: .8; }
+
+.icona {
+    width: 1.7rem;
+    height: 1.7rem;
+    vertical-align: middle;
+}
+
+#legenda .icona {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: .3rem;
+}
+
+#scheda .icona {
+    float: right;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-left: .5rem;
+}
+
+.vista {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .75rem;
+    font-size: .85rem;
+    color: var(--tenue);
+}
+
+.vista select {
+    padding: .35rem .5rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--testo);
+    background: var(--carta);
+    border: 1px solid var(--riga);
+    border-radius: .6rem;
+}
+
+/* i Paesi vicini: il bordo dello stesso colore chiude le fessure con i confini italiani, presi da un'altra fonte */
+#paesi path {
+    fill: var(--estero);
+    stroke: var(--estero);
+    stroke-width: 5px;
+    stroke-linejoin: round;
 }
 
 .t0 { fill: var(--t0); background: var(--t0); }
@@ -371,6 +438,34 @@ td small {
 
 .vecchia td:last-child {
     color: var(--avviso);
+}
+
+/* telefono: sei colonne stanno strette */
+@media (max-width: 40rem) {
+    .cartina,
+    #dettaglio,
+    .tabella {
+        padding: .75rem .6rem;
+    }
+
+    th,
+    td {
+        padding: .45rem .2rem;
+        font-size: .9rem;
+    }
+
+    th {
+        font-size: .72rem;
+    }
+
+    /* la descrizione del tempo si nasconde alla vista, ma resta per i lettori di schermo */
+    .descrizione {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+    }
 }
 
 footer {

@@ -1,4 +1,4 @@
-// La cartina: un punto per ogni citta', colorato in base alla temperatura.
+// La cartina: per ogni citta' l'icona del tempo oppure un punto colorato in base alla temperatura.
 // Con il cursore vicino a un punto (o toccandolo) si vedono i suoi dati; con un clic restano fissi.
 // I dati arrivano da app.js, che chiama disegnaMappa ogni volta che cambia qualcosa.
 
@@ -11,11 +11,19 @@ const mappa = document.getElementById("mappa");
 const gruppoPunti = document.getElementById("punti");
 const scheda = document.getElementById("scheda");
 const legenda = document.getElementById("legenda");
+const vista = document.getElementById("vista");
+const anello = document.getElementById("anello");
 
-let posizioni = [];   // { misura, x, y, cerchio } per ogni punto disegnato
+const ICONA = 46;    // grandezza delle icone, in unita' del disegno
+const DISTACCO = 34; // due icone piu' vicine di cosi' si coprirebbero: la seconda diventa un puntino
+// quando non c'e' posto per tutte, l'icona va prima ai capoluoghi di regione
+const CAPOLUOGHI = new Set(["ancona", "aosta", "bari", "bologna", "cagliari", "campobasso", "catanzaro", "firenze",
+    "genova", "l_aquila", "milano", "napoli", "palermo", "perugia", "potenza", "roma", "torino", "trento", "trieste", "venezia"]);
+
+let posizioni = [];   // { misura, x, y, visibile, segno }: segno e' l'icona o il cerchio disegnato
 let fissata = null;   // codice della citta' scelta con un clic, oppure null
 
-// Da latitudine e longitudine a un punto del disegno (largo 726, alto 952).
+// Da latitudine e longitudine a un punto del disegno (l'Italia sta in 726 x 952).
 // Un grado di longitudine, alle nostre latitudini, e' piu' corto di uno di latitudine:
 // per questo si moltiplica per il coseno di 42 gradi (circa 0,743).
 // La y del disegno cresce verso il basso, la latitudine verso l'alto: da qui la sottrazione.
@@ -44,16 +52,39 @@ function disegnaMappa(misure, visibili) {
             continue; // senza coordinate non si puo' mettere sulla cartina: resta nella tabella
         }
         const { x, y } = proietta(dati.latitudine, dati.longitudine);
-        const cerchio = document.createElementNS(SVG, "circle");
-        cerchio.setAttribute("cx", x);
-        cerchio.setAttribute("cy", y);
-        cerchio.setAttribute("r", 9);
-        cerchio.setAttribute("class", classeColore(m.temperatura));
-        cerchio.classList.toggle("sbiadito", !visibili.has(m.citta));
-        posizioni.push({ misura: m, x, y, cerchio, visibile: visibili.has(m.citta) });
+        posizioni.push({ misura: m, x, y, visibile: visibili.has(m.citta) });
     }
-    gruppoPunti.replaceChildren(...posizioni.map(p => p.cerchio));
+    scegliSegni();
+    gruppoPunti.replaceChildren(...posizioni.map(p => p.segno));
+    disegnaLegenda();
     mostra(trova(fissata));
+}
+
+// Decide per ogni citta' se disegnare l'icona, un puntino o il cerchio colorato
+function scegliSegni() {
+    // prima le citta' che passano i filtri, poi i capoluoghi di regione: hanno la precedenza sul posto
+    const peso = p => (p.visibile ? 2 : 0) + (CAPOLUOGHI.has(p.misura.citta) ? 1 : 0);
+    const conIcona = [];
+    for (const p of [...posizioni].sort((a, b) => peso(b) - peso(a))) {
+        const tempo = vista.value === "tempo" ? descriviTempo(p.misura) : null;
+        const libero = conIcona.every(q => Math.hypot(p.x - q.x, p.y - q.y) >= DISTACCO);
+        if (tempo && libero) {
+            p.segno = document.createElementNS(SVG, "use");
+            p.segno.setAttribute("href", "#i-" + tempo.icona);
+            p.segno.setAttribute("x", p.x - ICONA / 2);
+            p.segno.setAttribute("y", p.y - ICONA / 2);
+            p.segno.setAttribute("width", ICONA);
+            p.segno.setAttribute("height", ICONA);
+            conIcona.push(p);
+        } else {
+            p.segno = document.createElementNS(SVG, "circle");
+            p.segno.setAttribute("cx", p.x);
+            p.segno.setAttribute("cy", p.y);
+            p.segno.setAttribute("r", tempo ? 4.5 : 10);
+            p.segno.setAttribute("class", tempo ? "puntino" : classeColore(p.misura.temperatura));
+        }
+        p.segno.classList.toggle("sbiadito", !p.visibile);
+    }
 }
 
 function trova(codice) {
@@ -80,15 +111,15 @@ function piuVicino(evento) {
 
 // Riempie la scheda e la mette accanto al punto, senza uscire dalla cartina
 function mostra(punto) {
-    for (const p of posizioni) {
-        p.cerchio.classList.toggle("scelto", p === punto);
-    }
+    anello.setAttribute("visibility", punto ? "visible" : "hidden");
     scheda.hidden = !punto;
     mappa.style.cursor = punto ? "pointer" : "";
     if (!punto) {
         return;
     }
-    gruppoPunti.append(punto.cerchio); // in fondo al gruppo = disegnato sopra gli altri
+    anello.setAttribute("cx", punto.x);
+    anello.setAttribute("cy", punto.y);
+    gruppoPunti.append(punto.segno); // in fondo al gruppo = disegnato sopra gli altri
 
     const m = punto.misura;
     const dati = nomi.get(m.citta);
@@ -97,7 +128,9 @@ function mostra(punto) {
     const dove = document.createElement("small");
     dove.textContent = dati.regione;
     const valori = document.createElement("dl");
+    const tempo = descriviTempo(m);
     for (const [nome, valore] of [
+        ["Tempo", tempo?.testo ?? "–"],
         ["Temperatura", testoNumero(m.temperatura) + " °C"],
         ["Vento", testoNumero(m.vento) + " km/h"],
         ["Pioggia", testoNumero(m.pioggia) + " mm"],
@@ -110,14 +143,17 @@ function mostra(punto) {
         valori.append(dt, dd);
     }
     scheda.replaceChildren(titolo, dove, valori);
+    if (tempo) {
+        scheda.prepend(creaIcona(tempo.icona));
+    }
 
     // dove si trova il punto sullo schermo, rispetto al contenitore
     const schermo = new DOMPoint(punto.x, punto.y).matrixTransform(mappa.getScreenCTM());
     const base = contenitore.getBoundingClientRect();
     const x = schermo.x - base.left;
     const y = schermo.y - base.top;
-    const aDestra = x + 16 + scheda.offsetWidth <= base.width;
-    const sinistra = aDestra ? x + 16 : x - 16 - scheda.offsetWidth;
+    const aDestra = x + 22 + scheda.offsetWidth <= base.width;
+    const sinistra = aDestra ? x + 22 : x - 22 - scheda.offsetWidth;
     const sopra = y - scheda.offsetHeight / 2;
     scheda.style.left = Math.max(0, Math.min(sinistra, base.width - scheda.offsetWidth)) + "px";
     scheda.style.top = Math.max(0, Math.min(sopra, base.height - scheda.offsetHeight)) + "px";
@@ -144,21 +180,39 @@ document.addEventListener("keydown", e => {
 });
 window.addEventListener("resize", () => mostra(trova(fissata)));
 
-// I confini si disegnano una volta sola: una figura (path) per regione
-for (const disegno of Object.values(CONFINI)) {
-    const figura = document.createElementNS(SVG, "path");
-    figura.setAttribute("d", disegno);
-    document.getElementById("confini").append(figura);
-}
+vista.addEventListener("change", () => disegna()); // disegna sta in app.js, che si carica dopo: per questo la funzione freccia
 
-// La legenda: un quadratino per colore, con i gradi scritti
-for (let i = 0; i <= PASSI.length; i++) {
-    const voce = document.createElement("li");
-    const colore = document.createElement("span");
-    colore.className = "campione t" + i;
-    const testo = i === 0 ? "sotto " + PASSI[0]
-        : i === PASSI.length ? "da " + PASSI[i - 1]
-        : PASSI[i - 1] + "–" + PASSI[i];
-    voce.append(colore, testo + " °C");
-    legenda.append(voce);
+// I contorni si disegnano una volta sola: una figura (path) per Paese e una per regione
+function disegnaContorni(contorni, gruppo) {
+    for (const disegno of Object.values(contorni)) {
+        const figura = document.createElementNS(SVG, "path");
+        figura.setAttribute("d", disegno);
+        document.getElementById(gruppo).append(figura);
+    }
+}
+disegnaContorni(PAESI, "paesi");
+disegnaContorni(CONFINI, "confini");
+
+// La legenda dipende dalla vista: le icone del tempo oppure i colori della temperatura
+function disegnaLegenda() {
+    const voci = [];
+    if (vista.value === "tempo") {
+        for (const t of TEMPI) {
+            const voce = document.createElement("li");
+            voce.append(creaIcona(t.icona), t.testo);
+            voci.push(voce);
+        }
+    } else {
+        for (let i = 0; i <= PASSI.length; i++) {
+            const voce = document.createElement("li");
+            const colore = document.createElement("span");
+            colore.className = "campione t" + i;
+            const testo = i === 0 ? "sotto " + PASSI[0]
+                : i === PASSI.length ? "da " + PASSI[i - 1]
+                : PASSI[i - 1] + "–" + PASSI[i];
+            voce.append(colore, testo + " °C");
+            voci.push(voce);
+        }
+    }
+    legenda.replaceChildren(...voci);
 }

@@ -48,7 +48,7 @@ def leggi_meteo(citta):
     parametri = urlencode({
         "latitude": latitudine,
         "longitude": longitudine,
-        "current": "temperature_2m,wind_speed_10m,precipitation",  # solo i dati attuali che ci servono
+        "current": "temperature_2m,wind_speed_10m,precipitation,weather_code,is_day",  # solo i dati attuali che ci servono
         "timezone": "UTC",  # un solo fuso per tutti: niente problemi con l'ora legale
     })
     # with chiude da solo il collegamento, anche se c'è un errore
@@ -63,6 +63,8 @@ def leggi_meteo(citta):
         "temperatura": attuale["temperature_2m"],  # gradi °C
         "vento": attuale["wind_speed_10m"],        # km/h
         "pioggia": attuale["precipitation"],       # mm
+        "tempo": attuale["weather_code"],          # codice WMO: 0 sereno, 3 coperto, 61 pioggia...
+        "giorno": bool(attuale["is_day"]),         # arriva come 1 o 0; serve per scegliere sole o luna
     }
 
 # Callback: non la chiamiamo noi. La chiama la libreria per ogni messaggio,

@@ -111,7 +111,19 @@ function creaRiga(m) {
     sotto.textContent = nomi.get(m.citta)?.regione ?? "";
     citta.append(sotto);
 
-    tr.append(citta, numero(m.temperatura), numero(m.vento), numero(m.pioggia), cella(ora(momento)));
+    const cellaTempo = document.createElement("td");
+    const tempo = descriviTempo(m);
+    if (tempo) {
+        cellaTempo.append(creaIcona(tempo.icona));
+        const descrizione = document.createElement("small");
+        descrizione.className = "descrizione";
+        descrizione.textContent = tempo.testo;
+        cellaTempo.append(descrizione);
+    } else {
+        cellaTempo.textContent = "–";
+    }
+
+    tr.append(citta, cellaTempo, numero(m.temperatura), numero(m.vento), numero(m.pioggia), cella(ora(momento)));
     return tr;
 }
 

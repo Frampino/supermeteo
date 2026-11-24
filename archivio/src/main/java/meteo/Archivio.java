@@ -48,8 +48,17 @@ public class Archivio {
                 temperatura DOUBLE PRECISION,
                 vento       DOUBLE PRECISION,
                 pioggia     DOUBLE PRECISION,
+                tempo       INTEGER,
+                giorno      BOOLEAN,
                 PRIMARY KEY (citta, ora)
             )""";
+
+    // Chi ha gia' la tabella vecchia non passa dalla CREATE qui sopra: le colonne nuove si aggiungono cosi'.
+    // Nelle misure di prima restano NULL. IF NOT EXISTS: dalla seconda volta non fa niente.
+    private static final String AGGIUNGI_COLONNE = """
+            ALTER TABLE misure
+                ADD COLUMN IF NOT EXISTS tempo INTEGER,
+                ADD COLUMN IF NOT EXISTS giorno BOOLEAN""";
 
     // il ? e' il messaggio intero: il JSON lo legge PostgreSQL (->> prende un campo come testo)
     // la stessa misura puo' arrivare due volte: ON CONFLICT la salva una volta sola
@@ -59,9 +68,10 @@ public class Archivio {
     //   m->>'citta'            il campo citta di m, come testo
     //   ::timestamptz ::float8 conversione da testo a data e a numero
     private static final String INSERISCI = """
-            INSERT INTO misure (citta, ora, temperatura, vento, pioggia)
+            INSERT INTO misure (citta, ora, temperatura, vento, pioggia, tempo, giorno)
             SELECT m->>'citta', (m->>'ora')::timestamptz, (m->>'temperatura')::float8,
-                   (m->>'vento')::float8, (m->>'pioggia')::float8
+                   (m->>'vento')::float8, (m->>'pioggia')::float8,
+                   (m->>'tempo')::int, (m->>'giorno')::boolean
             FROM (SELECT ?::jsonb AS m) AS messaggio
             ON CONFLICT (citta, ora) DO NOTHING""";
 
@@ -93,6 +103,7 @@ public class Archivio {
              Statement st = db.createStatement()) {
             // Statement semplice: va bene perche' il testo SQL e' fisso, senza dati dall'esterno
             st.execute(CREA_TABELLA);
+            st.execute(AGGIUNGI_COLONNE);
 
             // PreparedStatement: il comando si prepara una volta e si riusa per ogni messaggio.
             // Il dato entra al posto del ? e non si mescola mai al comando: niente SQL injection.

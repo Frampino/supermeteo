@@ -32,6 +32,8 @@ Valore JSON, UTF-8:
 | `temperatura` | numero o null | °C |
 | `vento` | numero o null | km/h |
 | `pioggia` | numero o null | mm nell'intervallo della misura |
+| `tempo` | intero o null | codice WMO del tempo (aggiunto il 24/11; manca nei messaggi prima) |
+| `giorno` | vero, falso o null | di giorno o di notte, nel luogo della misura |
 
 Chi aggiunge un campo non rompe gli altri: chi legge ignora i campi che non conosce.
 
@@ -88,7 +90,7 @@ Città sconosciuta: 404. `ore` fuori da 1-168: 400. Legge soltanto, non scrive m
 
 - Una pagina sola, senza framework. Si vede bene anche a larghezza telefono (360 px).
 - Elenco città con temperatura, vento e pioggia; ricerca, regione e ordinamento. Con un clic su una città: grafico della temperatura nelle ultime 24 ore; oltre 2 ore senza misure la linea si interrompe.
-- Cartina: un punto per città, colore secondo la temperatura; cursore o tocco mostra i dati, clic li fissa.
+- Cartina: icone del tempo, oppure un punto per città colorato secondo la temperatura; cursore o tocco mostra i dati, clic li fissa.
   Confini delle regioni: ISTAT tramite geojson-italy (CC BY 4.0), in `confini.js`.
 - Dati con `fetch("/api/...")`, aggiornati ogni 5 minuti. Ore mostrate nel fuso del browser (nei dati sono UTC).
 - Se l'API non risponde: messaggio chiaro, e restano visibili gli ultimi dati con la loro ora.
