@@ -87,6 +87,13 @@ h1 {
         position: sticky;
         top: 1rem;
     }
+
+    /* anche il grafico: cosi' si vede pure dopo un clic in fondo alla tabella */
+    #dettaglio {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
 }
 
 #contenitore-mappa {
@@ -96,7 +103,7 @@ h1 {
 #mappa {
     display: block;
     width: 100%;
-    max-height: 80vh;
+    max-height: 72vh;
     touch-action: manipulation;
 }
 
@@ -190,6 +197,77 @@ h1 {
     margin-right: .35rem;
     border-radius: 50%;
     vertical-align: -.05rem;
+}
+
+.aiuto {
+    margin: .5rem 0 0;
+    font-size: .85rem;
+    color: var(--tenue);
+}
+
+#dettaglio {
+    margin-bottom: 1rem;
+    padding: .5rem 0;
+    background: var(--sfondo);
+    border-bottom: 1px solid var(--riga);
+}
+
+#dettaglio h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+#lettura {
+    margin: .15rem 0 .4rem;
+    color: var(--tenue);
+    font-variant-numeric: tabular-nums;
+}
+
+#grafico {
+    display: block;
+    width: 100%;
+    height: 190px;
+    touch-action: pan-y;
+}
+
+.griglia {
+    stroke: var(--riga);
+}
+
+.asse {
+    fill: var(--tenue);
+    font-size: 12px;
+}
+
+.linea {
+    fill: none;
+    stroke: var(--t3);
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+.punto {
+    fill: var(--t3);
+    stroke: var(--sfondo);
+    stroke-width: 2px;
+}
+
+.mirino {
+    stroke: var(--tenue);
+    stroke-dasharray: 3 3;
+}
+
+#valori-grafico {
+    columns: 8rem;
+    padding-left: 1.2rem;
+    font-size: .85rem;
+    color: var(--tenue);
+}
+
+summary {
+    font-size: .85rem;
+    color: var(--tenue);
+    cursor: pointer;
 }
 
 td button {

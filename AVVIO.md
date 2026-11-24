@@ -1,4 +1,4 @@
-# Come accendere e spegnere tutto
+# SuperMeteo: come accendere e spegnere tutto
 
 Comandi dalla cartella `meteo-app`.
 

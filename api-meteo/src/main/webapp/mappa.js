@@ -127,6 +127,7 @@ function mostra(punto) {
 function fissa(codice) {
     fissata = codice === fissata ? null : codice;
     mostra(trova(fissata));
+    mostraGrafico(fissata);
 }
 
 mappa.addEventListener("pointermove", e => {

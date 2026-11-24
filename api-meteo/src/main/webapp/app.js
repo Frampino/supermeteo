@@ -46,6 +46,9 @@ async function aggiorna() {
         misure = await (await chiedi("api/meteo")).json();
         stato.className = "";
         stato.textContent = misure.length + " città, aggiornato alle " + ora(new Date());
+        if (fissata !== null) {
+            mostraGrafico(fissata); // se c'e' un grafico aperto, si aggiorna anche quello
+        }
     } catch (errore) {
         // non si svuota la tabella: restano visibili gli ultimi dati, ciascuno con la sua ora
         console.error(errore);

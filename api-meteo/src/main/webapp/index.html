@@ -4,17 +4,18 @@
     <meta charset="utf-8">
     <!-- senza questa riga il telefono mostrerebbe la pagina rimpicciolita -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Meteo capoluoghi</title>
+    <title>SuperMeteo</title>
     <link rel="stylesheet" href="stile.css">
     <!-- defer: lo script parte quando la pagina e' stata letta tutta -->
-    <!-- in ordine: i confini, la mappa che li disegna, app.js che usa la mappa -->
+    <!-- in ordine: i confini, la mappa che li disegna, il grafico, app.js che li usa -->
     <script src="confini.js" defer></script>
     <script src="mappa.js" defer></script>
+    <script src="grafico.js" defer></script>
     <script src="app.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>Meteo capoluoghi</h1>
+        <h1>SuperMeteo</h1>
         <p id="stato" role="status">Caricamento...</p>
     </header>
 
@@ -47,9 +48,19 @@
                 <div id="scheda" hidden></div>
             </div>
             <ul id="legenda" aria-label="Temperatura"></ul>
+            <p class="aiuto">Clic su una citt&agrave; per il grafico delle 24 ore.</p>
         </section>
 
-        <section aria-label="Tabella">
+        <section aria-label="Grafico e tabella">
+            <div id="dettaglio" hidden>
+                <h2 id="titolo-grafico"></h2>
+                <p id="lettura" aria-live="polite"></p>
+                <svg id="grafico" role="img" aria-labelledby="titolo-grafico"></svg>
+                <details>
+                    <summary>Tutti i valori</summary>
+                    <ul id="valori-grafico"></ul>
+                </details>
+            </div>
         <table>
             <thead>
                 <tr>

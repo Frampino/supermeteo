@@ -1,4 +1,4 @@
-# App meteo: specifiche
+# SuperMeteo: specifiche
 
 Esercizio a microservizi: Python, Kafka, Java, PostgreSQL, Jakarta EE, web app.
 Prima la web app; l'app per telefono è una seconda fase (sezione 5).
@@ -87,7 +87,7 @@ Città sconosciuta: 404. `ore` fuori da 1-168: 400. Legge soltanto, non scrive m
 ## 4. Web (HTML, CSS, JavaScript)
 
 - Una pagina sola, senza framework. Si vede bene anche a larghezza telefono (360 px).
-- Elenco città con temperatura, vento e pioggia; ricerca, regione e ordinamento. Grafico delle 24 ore: da fare.
+- Elenco città con temperatura, vento e pioggia; ricerca, regione e ordinamento. Con un clic su una città: grafico della temperatura nelle ultime 24 ore; oltre 2 ore senza misure la linea si interrompe.
 - Cartina: un punto per città, colore secondo la temperatura; cursore o tocco mostra i dati, clic li fissa.
   Confini delle regioni: ISTAT tramite geojson-italy (CC BY 4.0), in `confini.js`.
 - Dati con `fetch("/api/...")`, aggiornati ogni 5 minuti. Ore mostrate nel fuso del browser (nei dati sono UTC).
