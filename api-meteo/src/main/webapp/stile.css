@@ -8,18 +8,19 @@
     --riga: light-dark(#f1dfcd, #46342a);
     --accento: light-dark(#b93d12, #ff9b66);
     --avviso: light-dark(#a3160f, #ff8f85);
-    --mare: light-dark(#dceef2, #14242b);
-    --terra: light-dark(#fbe9cd, #3a2c23);
-    --confine: light-dark(#d3ad78, #6b5242);
+    /* la cartina: mare blu, Italia verde. Uguale nei due temi, solo un po' piu' scura in quello scuro */
+    --mare: light-dark(#17478a, #11376c);
+    --terra: light-dark(#24694f, #1e5a44);
+    --confine: light-dark(#a9d0bb, #86b39c);
     --tramonto: linear-gradient(110deg, #c2410c, #b3284f 60%, #7b2a7a);
-    /* temperatura: dall'ambra al rosso scuro; piu' caldo = piu' lontano dal colore della terra */
-    --t0: light-dark(oklch(.72 .16 68), oklch(.58 .11 45));
-    --t1: light-dark(oklch(.66 .18 54), oklch(.64 .14 45));
-    --t2: light-dark(oklch(.59 .19 42), oklch(.70 .17 48));
-    --t3: light-dark(oklch(.52 .18 32), oklch(.76 .16 58));
-    --t4: light-dark(oklch(.45 .16 25), oklch(.82 .15 70));
-    --t5: light-dark(oklch(.37 .13 20), oklch(.88 .13 82));
-    --t6: light-dark(oklch(.28 .09 15), oklch(.95 .09 95));
+    /* temperatura: dal giallo chiaro al rosso; sul verde li stacca il bordo bianco dei punti */
+    --t0: oklch(.95 .06 100);
+    --t1: oklch(.90 .12 95);
+    --t2: oklch(.84 .15 82);
+    --t3: oklch(.77 .16 66);
+    --t4: oklch(.70 .18 50);
+    --t5: oklch(.63 .20 36);
+    --t6: oklch(.55 .21 28);
 }
 
 * {
@@ -161,17 +162,17 @@ h1 {
 }
 
 #punti circle {
-    stroke: var(--carta);
+    stroke: #fff;
     stroke-width: 1.5px;
     vector-effect: non-scaling-stroke;
 }
 
 #punti .sbiadito {
-    opacity: .15;
+    opacity: .25;
 }
 
 #punti .scelto {
-    stroke: var(--testo);
+    r: 14px;
     stroke-width: 3px;
     opacity: 1;
 }
@@ -241,6 +242,7 @@ h1 {
     width: .8rem;
     height: .8rem;
     margin-right: .35rem;
+    border: 1px solid var(--tenue);
     border-radius: 50%;
     vertical-align: -.05rem;
 }
