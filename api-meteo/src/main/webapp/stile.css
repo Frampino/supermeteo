@@ -154,6 +154,7 @@ h1 {
     display: block;
     width: 100%;
     max-height: 72vh;
+    overflow: visible; /* ai lati si vedono i Paesi vicini, non uno stacco netto */
     touch-action: manipulation;
 }
 
