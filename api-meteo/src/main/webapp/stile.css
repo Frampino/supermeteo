@@ -164,7 +164,8 @@ h1 {
     vector-effect: non-scaling-stroke;
 }
 
-#punti circle {
+#punti circle,
+#sopra circle {
     stroke: #fff;
     stroke-width: 1.5px;
     vector-effect: non-scaling-stroke;
@@ -174,13 +175,13 @@ h1 {
     opacity: .25;
 }
 
-.puntino {
-    fill: #fff;
-    opacity: .8;
+#sopra {
+    pointer-events: none;
 }
 
+/* il fondo scuro stacca l'icona indicata da quelle vicine */
 #anello {
-    fill: none;
+    fill: var(--terra);
     stroke: #fff;
     stroke-width: 3px;
     vector-effect: non-scaling-stroke;

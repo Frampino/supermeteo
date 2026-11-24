@@ -13,10 +13,10 @@ const scheda = document.getElementById("scheda");
 const legenda = document.getElementById("legenda");
 const vista = document.getElementById("vista");
 const anello = document.getElementById("anello");
+const gruppoSopra = document.getElementById("sopra");
 
-const ICONA = 46;    // grandezza delle icone, in unita' del disegno
-const DISTACCO = 34; // due icone piu' vicine di cosi' si coprirebbero: la seconda diventa un puntino
-// quando non c'e' posto per tutte, l'icona va prima ai capoluoghi di regione
+const ICONA = 38; // grandezza delle icone, in unita' del disegno
+// dove le icone si coprono, stanno sopra i capoluoghi di regione
 const CAPOLUOGHI = new Set(["ancona", "aosta", "bari", "bologna", "cagliari", "campobasso", "catanzaro", "firenze",
     "genova", "l_aquila", "milano", "napoli", "palermo", "perugia", "potenza", "roma", "torino", "trento", "trieste", "venezia"]);
 
@@ -60,28 +60,28 @@ function disegnaMappa(misure, visibili) {
     mostra(trova(fissata));
 }
 
-// Decide per ogni citta' se disegnare l'icona, un puntino o il cerchio colorato
+// Disegna ogni citta': l'icona del tempo, oppure il cerchio colorato.
+// Le icone vicine si coprono in parte. Dentro un SVG lo z-index del CSS non ha effetto:
+// sta sopra chi e' disegnato dopo. Quindi si mettono in fila dalla meno alla piu' importante.
 function scegliSegni() {
-    // prima le citta' che passano i filtri, poi i capoluoghi di regione: hanno la precedenza sul posto
+    // peso: prima le citta' che passano i filtri, poi i capoluoghi di regione
     const peso = p => (p.visibile ? 2 : 0) + (CAPOLUOGHI.has(p.misura.citta) ? 1 : 0);
-    const conIcona = [];
-    for (const p of [...posizioni].sort((a, b) => peso(b) - peso(a))) {
+    posizioni.sort((a, b) => peso(a) - peso(b));
+    for (const p of posizioni) {
         const tempo = vista.value === "tempo" ? descriviTempo(p.misura) : null;
-        const libero = conIcona.every(q => Math.hypot(p.x - q.x, p.y - q.y) >= DISTACCO);
-        if (tempo && libero) {
+        if (tempo) {
             p.segno = document.createElementNS(SVG, "use");
             p.segno.setAttribute("href", "#i-" + tempo.icona);
             p.segno.setAttribute("x", p.x - ICONA / 2);
             p.segno.setAttribute("y", p.y - ICONA / 2);
             p.segno.setAttribute("width", ICONA);
             p.segno.setAttribute("height", ICONA);
-            conIcona.push(p);
         } else {
             p.segno = document.createElementNS(SVG, "circle");
             p.segno.setAttribute("cx", p.x);
             p.segno.setAttribute("cy", p.y);
-            p.segno.setAttribute("r", tempo ? 4.5 : 10);
-            p.segno.setAttribute("class", tempo ? "puntino" : classeColore(p.misura.temperatura));
+            p.segno.setAttribute("r", 10);
+            p.segno.setAttribute("class", classeColore(p.misura.temperatura));
         }
         p.segno.classList.toggle("sbiadito", !p.visibile);
     }
@@ -112,6 +112,8 @@ function piuVicino(evento) {
 // Riempie la scheda e la mette accanto al punto, senza uscire dalla cartina
 function mostra(punto) {
     anello.setAttribute("visibility", punto ? "visible" : "hidden");
+    // una copia della citta' indicata, nel gruppo disegnato per ultimo: cosi' si vede intera
+    gruppoSopra.replaceChildren(...(punto ? [punto.segno.cloneNode()] : []));
     scheda.hidden = !punto;
     mappa.style.cursor = punto ? "pointer" : "";
     if (!punto) {
@@ -119,7 +121,6 @@ function mostra(punto) {
     }
     anello.setAttribute("cx", punto.x);
     anello.setAttribute("cy", punto.y);
-    gruppoPunti.append(punto.segno); // in fondo al gruppo = disegnato sopra gli altri
 
     const m = punto.misura;
     const dati = nomi.get(m.citta);
