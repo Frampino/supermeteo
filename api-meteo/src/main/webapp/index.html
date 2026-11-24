@@ -15,8 +15,16 @@
 </head>
 <body>
     <header>
-        <h1>SuperMeteo</h1>
-        <p id="stato" role="status">Caricamento...</p>
+        <!-- il sole e' un disegno: aria-hidden dice ai lettori di schermo di ignorarlo -->
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+            <circle cx="24" cy="24" r="9" fill="currentColor"/>
+            <path d="M24 4v7M24 37v7M4 24h7M37 24h7M9.9 9.9l4.9 4.9M33.2 33.2l4.9 4.9M9.9 38.1l4.9-4.9M33.2 14.8l4.9-4.9"
+                  stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+            <h1>SuperMeteo</h1>
+            <p id="stato" role="status">Caricamento...</p>
+        </div>
     </header>
 
     <main>
@@ -61,6 +69,7 @@
                     <ul id="valori-grafico"></ul>
                 </details>
             </div>
+        <div class="tabella">
         <table>
             <thead>
                 <tr>
@@ -75,6 +84,7 @@
             <tbody id="righe"></tbody>
         </table>
         <p id="vuoto" hidden>Nessuna citt&agrave; trovata.</p>
+        </div>
         </section>
         </div>
     </main>

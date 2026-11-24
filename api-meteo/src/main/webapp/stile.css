@@ -1,19 +1,25 @@
+/* I colori stanno tutti qui. light-dark(chiaro, scuro): il browser sceglie secondo il tema del computer. */
 :root {
     color-scheme: light dark;
-    --sfondo: light-dark(#f6f8f7, #14191b);
-    --testo: light-dark(#1b2528, #e7eceb);
-    --tenue: light-dark(#56646a, #9fb0b3);
-    --riga: light-dark(#dbe2e1, #2c373a);
-    --avviso: light-dark(#9c2f12, #ff9d80);
-    --terra: light-dark(#e6ebe9, #222b2e);
-    /* temperatura: un colore solo, da freddo (vicino allo sfondo) a caldo (lontano dallo sfondo) */
-    --t0: light-dark(oklch(.72 .14 60), oklch(.47 .10 45));
-    --t1: light-dark(oklch(.66 .15 55), oklch(.54 .13 48));
-    --t2: light-dark(oklch(.59 .16 50), oklch(.61 .15 50));
-    --t3: light-dark(oklch(.52 .15 45), oklch(.69 .16 54));
-    --t4: light-dark(oklch(.45 .13 40), oklch(.77 .15 62));
-    --t5: light-dark(oklch(.37 .11 36), oklch(.85 .12 72));
-    --t6: light-dark(oklch(.29 .08 32), oklch(.92 .08 85));
+    --sfondo: light-dark(#fff4e6, #1c1411);
+    --carta: light-dark(#fffdfa, #281d18);
+    --testo: light-dark(#33221a, #fbeee3);
+    --tenue: light-dark(#775a4a, #cdb09e);
+    --riga: light-dark(#f1dfcd, #46342a);
+    --accento: light-dark(#b93d12, #ff9b66);
+    --avviso: light-dark(#a3160f, #ff8f85);
+    --mare: light-dark(#dceef2, #14242b);
+    --terra: light-dark(#fbe9cd, #3a2c23);
+    --confine: light-dark(#d3ad78, #6b5242);
+    --tramonto: linear-gradient(110deg, #c2410c, #b3284f 60%, #7b2a7a);
+    /* temperatura: dall'ambra al rosso scuro; piu' caldo = piu' lontano dal colore della terra */
+    --t0: light-dark(oklch(.72 .16 68), oklch(.58 .11 45));
+    --t1: light-dark(oklch(.66 .18 54), oklch(.64 .14 45));
+    --t2: light-dark(oklch(.59 .19 42), oklch(.70 .17 48));
+    --t3: light-dark(oklch(.52 .18 32), oklch(.76 .16 58));
+    --t4: light-dark(oklch(.45 .16 25), oklch(.82 .15 70));
+    --t5: light-dark(oklch(.37 .13 20), oklch(.88 .13 82));
+    --t6: light-dark(oklch(.28 .09 15), oklch(.95 .09 95));
 }
 
 * {
@@ -29,19 +35,57 @@ body {
     font: 1rem/1.45 system-ui, sans-serif;
 }
 
+header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1.1rem 1.25rem;
+    color: #fff;
+    background: var(--tramonto);
+    border-radius: 1rem;
+}
+
+header svg {
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    color: #ffd27a;
+}
+
 h1 {
     margin: 0;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+    line-height: 1.15;
+    letter-spacing: -.01em;
 }
 
 #stato {
-    margin: .25rem 0 1rem;
-    color: var(--tenue);
+    margin: .15rem 0 0;
 }
 
 #stato.errore {
-    color: var(--avviso);
+    display: inline-block;
+    padding: .1rem .5rem;
     font-weight: 600;
+    color: #7a0f0a;
+    background: #fff1ee;
+    border-radius: .4rem;
+}
+
+/* i riquadri della cartina, del grafico e della tabella */
+.cartina,
+#dettaglio,
+.tabella {
+    padding: 1rem;
+    background: var(--carta);
+    border: 1px solid var(--riga);
+    border-radius: 1rem;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accento);
+    outline-offset: 2px;
 }
 
 .filtri {
@@ -66,9 +110,9 @@ h1 {
     font: inherit;
     font-size: 1rem;
     color: var(--testo);
-    background: var(--sfondo);
+    background: var(--carta);
     border: 1px solid var(--riga);
-    border-radius: .4rem;
+    border-radius: .6rem;
 }
 
 .colonne {
@@ -98,6 +142,8 @@ h1 {
 
 #contenitore-mappa {
     position: relative;
+    background: var(--mare);
+    border-radius: .75rem;
 }
 
 #mappa {
@@ -109,13 +155,13 @@ h1 {
 
 #confini path {
     fill: var(--terra);
-    stroke: var(--sfondo);
-    stroke-width: 1.5px;
+    stroke: var(--confine);
+    stroke-width: 1px;
     vector-effect: non-scaling-stroke;
 }
 
 #punti circle {
-    stroke: var(--sfondo);
+    stroke: var(--carta);
     stroke-width: 1.5px;
     vector-effect: non-scaling-stroke;
 }
@@ -148,7 +194,7 @@ h1 {
     width: max-content;
     max-width: 14rem;
     padding: .6rem .75rem;
-    background: var(--sfondo);
+    background: var(--carta);
     border: 1px solid var(--riga);
     border-radius: .5rem;
     box-shadow: 0 4px 16px rgb(0 0 0 / .25);
@@ -207,9 +253,6 @@ h1 {
 
 #dettaglio {
     margin-bottom: 1rem;
-    padding: .5rem 0;
-    background: var(--sfondo);
-    border-bottom: 1px solid var(--riga);
 }
 
 #dettaglio h2 {
@@ -241,14 +284,14 @@ h1 {
 
 .linea {
     fill: none;
-    stroke: var(--t3);
+    stroke: var(--accento);
     stroke-width: 2px;
     stroke-linejoin: round;
 }
 
 .punto {
-    fill: var(--t3);
-    stroke: var(--sfondo);
+    fill: var(--accento);
+    stroke: var(--carta);
     stroke-width: 2px;
 }
 
@@ -281,6 +324,15 @@ td button {
     text-decoration: underline;
     text-decoration-color: var(--riga);
     text-underline-offset: .2em;
+}
+
+td button:hover {
+    color: var(--accento);
+    text-decoration-color: currentColor;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
 }
 
 table {
